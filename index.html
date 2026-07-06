@@ -4,27 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>S99 Agency — Reporting Assistant</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+  /* ═══════════════════════════════════════════════════════════
+     BRAND TOKENS — swap these 4 values once the real S99 logo /
+     hex codes are provided. Everything else derives from these.
+  ═══════════════════════════════════════════════════════════ */
   :root {
-    --navy: #32475e;
-    --navy-deep: #263647;
-    --teal: #70c8b1;
-    --sky: #6cc8f0;
-    --bg: #ffffff;
-    --bg-soft: #f6f8f9;
-    --bubble-bot: #f1f4f5;
-    --text: #22303c;
-    --muted: #8593a0;
-    --border: #e7ebee;
+    --brand-ink:      #0A0A0A;   /* header / primary dark */
+    --brand-ink-soft: #1C1C1E;   /* secondary dark */
+    --brand-gold:     #C9A227;   /* signature accent */
+    --brand-gold-lt:  #E7C766;   /* accent, lighter, for gradients */
   }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   html, body {
     height: 100%; height: 100dvh;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #ffffff;
+    background: #eef0f2;
     overflow: hidden;
   }
 
@@ -34,138 +32,79 @@
     width: 100%; height: 100%; height: 100dvh;
     display: flex; flex-direction: column;
     overflow: hidden;
-    background: var(--bg);
-    position: relative;
+    background: #ffffff;
   }
 
   @media (min-width: 600px) {
-    body { align-items: center; justify-content: center; background: #ffffff; }
+    body { align-items: center; justify-content: center; background: #eef0f2; }
     .shell {
       max-width: 420px;
-      height: 92vh; max-height: 820px; min-height: 500px;
+      height: 92vh; max-height: 840px; min-height: 520px;
       border-radius: 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 8px 40px rgba(50,71,94,0.10), 0 2px 8px rgba(50,71,94,0.06);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06);
     }
   }
 
   /* ─── HEADER ─── */
   .hdr {
     background: #ffffff;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #eceded;
     padding: 14px 16px 12px;
     padding-top: calc(14px + env(safe-area-inset-top));
     display: flex; align-items: center; gap: 12px;
     flex-shrink: 0;
   }
-  .hdr-icon-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--muted); padding: 4px; border-radius: 8px;
+  .logo-mark {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--brand-ink) 0%, var(--brand-ink-soft) 65%);
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: background 0.15s, color 0.15s;
-    -webkit-tap-highlight-color: transparent;
+    position: relative; overflow: hidden;
   }
-  .hdr-icon-btn:hover { background: var(--bg-soft); color: var(--navy); }
-  .hdr-icon-btn svg { width: 19px; height: 19px; }
-
-  .hdr-logo {
-    width: 40px; height: 40px; border-radius: 11px;
-    flex-shrink: 0; overflow: hidden;
-    background: var(--navy);
-    display: flex; align-items: center; justify-content: center;
+  .logo-mark span {
+    font-size: 15px; font-weight: 800; letter-spacing: -0.02em;
+    background: linear-gradient(120deg, var(--brand-gold-lt), var(--brand-gold));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .hdr-logo svg { width: 100%; height: 100%; }
-
   .hdr-info { flex: 1; min-width: 0; }
   .hdr-name {
-    font-size: 15px; font-weight: 700;
-    color: var(--navy); letter-spacing: -0.01em; line-height: 1.2;
+    font-size: 15.5px; font-weight: 700; color: var(--brand-ink);
+    letter-spacing: -0.01em; line-height: 1.2;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .hdr-status-row {
-    display: flex; align-items: center; gap: 5px; margin-top: 3px;
+  .hdr-sub-row { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+  .hdr-sub-label { font-size: 11px; color: #8a8f98; font-weight: 500; }
+  .live-badge {
+    font-size: 9.5px; font-weight: 700; color: #16a34a;
+    background: #eafaf0; padding: 2px 7px; border-radius: 20px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 4px;
   }
-  .hdr-status-dot {
-    width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
-    flex-shrink: 0;
+  .live-badge::before { content:''; width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+  .hdr-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .hdr-icon-btn {
+    background: #f4f4f5; border: none; color: #55585e;
+    width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
   }
-  .hdr-status-text {
-    font-size: 10.5px; font-weight: 500; color: var(--muted);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  .hdr-icon-btn:hover { background: #e9e9ea; }
+  .hdr-icon-btn svg { width: 16px; height: 16px; }
 
-  /* ─── SUBHEADER: connected sources ─── */
-  .subhdr {
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-    padding: 7px 16px;
-    display: flex; align-items: center; gap: 12px;
-    flex-shrink: 0;
-    overflow-x: auto; -webkit-overflow-scrolling: touch;
+  /* ─── DATA SOURCE BAR ─── */
+  .src-bar {
+    background: #fff; border-bottom: 1px solid #eceded;
+    padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
   }
-  .subhdr::-webkit-scrollbar { display: none; }
-  .src-item {
+  .src-bar::-webkit-scrollbar { display: none; }
+  .src-chip {
     display: flex; align-items: center; gap: 5px;
-    font-size: 10.5px; color: var(--navy); font-weight: 500;
+    font-size: 10.5px; color: #55585e; font-weight: 600;
     white-space: nowrap; flex-shrink: 0;
+    background: #f7f7f8; border: 1px solid #eceded;
+    padding: 4px 9px 4px 7px; border-radius: 20px;
   }
-  .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
-
-  /* ─── SIDEBAR (chat history) ─── */
-  .sidebar-backdrop {
-    position: absolute; inset: 0; background: rgba(38,54,71,0.35);
-    opacity: 0; pointer-events: none; transition: opacity 0.22s ease;
-    z-index: 20; border-radius: inherit;
-  }
-  .sidebar-backdrop.open { opacity: 1; pointer-events: auto; }
-
-  .sidebar {
-    position: absolute; top: 0; left: 0; bottom: 0;
-    width: 82%; max-width: 320px;
-    background: #ffffff;
-    border-right: 1px solid var(--border);
-    transform: translateX(-100%);
-    transition: transform 0.24s cubic-bezier(.4,0,.2,1);
-    z-index: 21; display: flex; flex-direction: column;
-    border-top-left-radius: inherit; border-bottom-left-radius: inherit;
-  }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-hdr {
-    padding: 16px 14px 12px;
-    padding-top: calc(16px + env(safe-area-inset-top));
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .sidebar-title { font-size: 14px; font-weight: 700; color: var(--navy); }
-  .new-chat-btn {
-    margin: 12px 14px 6px;
-    background: var(--navy); color: #fff; border: none;
-    border-radius: 10px; padding: 10px 12px;
-    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
-    cursor: pointer; display: flex; align-items: center; gap: 6px; justify-content: center;
-    transition: opacity 0.15s;
-  }
-  .new-chat-btn:hover { opacity: 0.9; }
-  .session-list { flex: 1; overflow-y: auto; padding: 4px 8px 12px; }
-  .session-item {
-    padding: 10px 10px; border-radius: 10px; cursor: pointer;
-    display: flex; flex-direction: column; gap: 2px;
-    transition: background 0.14s; margin-bottom: 2px;
-  }
-  .session-item:hover { background: var(--bg-soft); }
-  .session-item.active { background: #e9f6f1; }
-  .session-item-title {
-    font-size: 12.5px; font-weight: 600; color: var(--text);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .session-item-preview {
-    font-size: 11px; color: var(--muted);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .session-item-time { font-size: 9.5px; color: var(--muted); margin-top: 1px; }
-  .session-empty {
-    padding: 30px 16px; text-align: center; color: var(--muted); font-size: 12px; line-height: 1.6;
-  }
+  .src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; background: #22c55e; }
 
   /* ─── MESSAGES ─── */
   .msgs {
@@ -177,255 +116,250 @@
     background: #ffffff;
   }
   .msgs::-webkit-scrollbar { width: 4px; }
-  .msgs::-webkit-scrollbar-thumb { background: rgba(50,71,94,0.12); border-radius: 2px; }
+  .msgs::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
 
   .date-pill {
-    text-align: center; font-size: 11px; color: var(--muted);
-    font-weight: 500; letter-spacing: 0.02em;
-    padding: 2px 0 4px;
+    text-align: center; font-size: 11px; color: #9aa0a6;
+    font-weight: 500; letter-spacing: 0.02em; padding: 2px 0 4px;
   }
 
   .agent-row { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; }
   .agent-row-av {
-    width: 26px; height: 26px; border-radius: 8px;
-    overflow: hidden; flex-shrink: 0; background: var(--navy);
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--brand-ink), var(--brand-ink-soft));
     display: flex; align-items: center; justify-content: center;
   }
-  .agent-row-av svg { width: 100%; height: 100%; }
-  .agent-row-name { font-size: 11.5px; font-weight: 700; color: var(--navy); letter-spacing: 0.01em; }
-  .agent-row-time { font-size: 10px; color: var(--muted); margin-left: auto; }
+  .agent-row-av span {
+    font-size: 9px; font-weight: 800;
+    background: linear-gradient(120deg, var(--brand-gold-lt), var(--brand-gold));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .agent-row-name { font-size: 11.5px; font-weight: 700; color: #202124; }
+
+  /* source badge — color set dynamically per source via inline style vars */
+  .src-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 1.5px 7px; border-radius: 10px;
+    color: var(--sb-fg, #4338ca); background: var(--sb-bg, #eef0ff);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .src-badge::before { content:''; width: 5px; height: 5px; border-radius: 50%; background: var(--sb-fg, #4338ca); }
+  .agent-row-time { font-size: 10px; color: #9aa0a6; margin-left: auto; white-space: nowrap; }
 
   .msg-group { animation: fadeUp 0.22s ease; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
 
   .msg { display: flex; gap: 8px; margin-bottom: 4px; }
   .msg.u { flex-direction: row-reverse; }
 
   .u-av {
-    width: 26px; height: 26px; border-radius: 8px;
-    flex-shrink: 0; background: var(--sky);
-    color: #fff; font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    align-self: flex-end;
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+    background: #f4f4f5; color: #55585e; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; align-self: flex-end;
   }
 
-  .bub-col { display: flex; flex-direction: column; max-width: 78%; }
-  .bub-col.u { align-items: flex-end; }
+  .bub { max-width: 78%; padding: 10px 14px; border-radius: 16px; font-size: 14px; line-height: 1.6; word-break: break-word; }
+  .bub.b { background: #f5f5f6; color: #1c1c1e; border-top-left-radius: 4px; }
+  .bub.u { background: var(--brand-ink); color: #fff; border-top-right-radius: 4px; }
+  .u-time-row { display:flex; justify-content:flex-end; margin-bottom:4px; }
+  .u-time-row span { font-size: 10px; color: #9aa0a6; margin-right: 4px; }
 
-  .bub {
-    padding: 10px 14px;
-    border-radius: 16px; font-size: 14px;
-    line-height: 1.6; word-break: break-word;
-  }
-  .bub.b { background: var(--bubble-bot); color: var(--text); border-top-left-radius: 4px; }
-  .bub.u { background: var(--navy); color: #fff; border-top-right-radius: 4px; }
-
-  .bub.b strong { color: var(--navy); font-weight: 600; }
-  .bub.b em { font-style: italic; color: var(--muted); }
+  .bub.b strong { color: var(--brand-ink); font-weight: 700; }
+  .bub.b em { font-style: italic; color: #5f6368; }
   .bub.b ul, .bub.b ol { margin: 6px 0 4px 18px; }
   .bub.b li { margin-bottom: 4px; line-height: 1.55; }
   .bub.b p { margin-bottom: 6px; }
   .bub.b p:last-child { margin-bottom: 0; }
-  .bub.b h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin: 7px 0 4px; }
-  .bub.b a { color: var(--navy); text-decoration: underline; word-break: break-all; }
-  .bub.b code { background: #e8eaed; color: var(--text); border-radius: 4px; padding: 1px 5px; font-size: 12px; font-family: monospace; }
-  .bub.b blockquote { border-left: 3px solid var(--teal); padding-left: 10px; margin: 6px 0; color: var(--muted); font-style: italic; }
-  .bub.b hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+  .bub.b h3 { font-size: 14px; font-weight: 700; color: #202124; margin: 7px 0 4px; }
+  .bub.b a { color: var(--brand-ink); text-decoration: underline; word-break: break-all; }
+  .bub.b code { background: #e8eaed; color: #202124; border-radius: 4px; padding: 1px 5px; font-size: 12px; font-family: monospace; }
+  .bub.b blockquote { border-left: 3px solid var(--brand-gold); padding-left: 10px; margin: 6px 0; color: #5f6368; font-style: italic; }
+  .bub.b hr { border: none; border-top: 1px solid #e0e0e0; margin: 8px 0; }
 
-  /* meta row: timestamp + source badge, under each bubble */
-  .bub-meta {
-    display: flex; align-items: center; gap: 6px;
-    margin-top: 4px; padding: 0 2px;
-  }
-  .bub-col.u .bub-meta { flex-direction: row-reverse; }
-  .meta-time { font-size: 10px; color: var(--muted); }
-  .source-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 9.5px; font-weight: 600; color: var(--navy);
-    background: #e9f6f1; padding: 2px 7px; border-radius: 20px;
-    letter-spacing: 0.02em;
-  }
-  .source-badge .src-dot2 { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
-
-  /* ─── OPTION PILLS ─── */
-  .options-wrap {
-    margin-top: 4px; display: flex; flex-wrap: wrap; gap: 7px;
-    animation: fadeUp 0.25s ease 0.1s both;
-  }
+  .options-wrap { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 7px; animation: fadeUp 0.25s ease 0.1s both; }
   .opt-pill {
-    background: #fff; border: 1.5px solid var(--navy); color: var(--navy);
+    background: #fff; border: 1.5px solid var(--brand-ink); color: var(--brand-ink);
     font-size: 13px; font-weight: 500; padding: 7px 15px; border-radius: 50px;
     cursor: pointer; transition: all 0.16s; -webkit-tap-highlight-color: transparent;
     white-space: normal; text-align: center; line-height: 1.35; font-family: 'Inter', sans-serif;
   }
-  .opt-pill:hover { background: var(--navy); color: #fff; }
+  .opt-pill:hover { background: var(--brand-ink); color: #fff; }
   .opt-pill:active { transform: scale(0.97); }
-  .opt-pill:disabled { opacity: 0.45; cursor: not-allowed; border-color: var(--muted); color: var(--muted); }
+  .opt-pill:disabled { opacity: 0.45; cursor: not-allowed; border-color: #9aa0a6; color: #9aa0a6; }
 
-  /* ─── TYPING ─── */
   .tdots {
     display: flex; gap: 4px; align-items: center; padding: 11px 16px;
-    background: var(--bubble-bot); border-radius: 16px; border-top-left-radius: 4px;
-    width: fit-content;
+    background: #f5f5f6; border-radius: 18px; border-top-left-radius: 4px; width: fit-content;
   }
-  .d { width: 6px; height: 6px; background: var(--muted); border-radius: 50%; opacity: 0.7; animation: bop 1.2s infinite; }
+  .d { width: 6px; height: 6px; background: #9aa0a6; border-radius: 50%; opacity: 0.7; animation: bop 1.2s infinite; }
   .d:nth-child(2) { animation-delay: .2s; }
   .d:nth-child(3) { animation-delay: .4s; }
-  @keyframes bop { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  @keyframes bop { 0%,60%,100% { transform: translateY(0);} 30% { transform: translateY(-5px);} }
 
-  .bub.err { background: #fdeeee; color: #c5221f; border-top-left-radius: 4px; }
+  .bub.err { background: #fce8e6; color: #c5221f; border-top-left-radius: 4px; }
   .retry-btn {
-    display: inline-block; margin-top: 6px; background: #fff; border: 1px solid #f2b3b0;
+    display: inline-block; margin-top: 6px; background: #fff; border: 1px solid #f28b82;
     color: #c5221f; font-size: 12px; padding: 4px 10px; border-radius: 12px; cursor: pointer;
     font-family: 'Inter', sans-serif; transition: background 0.15s;
   }
   .retry-btn:hover { background: #c5221f; color: #fff; }
 
+  /* ─── HISTORY DRAWER ─── */
+  .history-panel {
+    position: absolute; inset: 0; background: #fff; z-index: 20;
+    display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform .22s ease;
+  }
+  .history-panel.open { transform: translateX(0); }
+  .hp-hdr {
+    padding: 14px 16px; padding-top: calc(14px + env(safe-area-inset-top));
+    display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eceded; flex-shrink: 0;
+  }
+  .hp-title { font-size: 15px; font-weight: 700; color: var(--brand-ink); flex: 1; }
+  .hp-new-btn {
+    font-size: 12.5px; font-weight: 600; color: var(--brand-ink);
+    background: #f4f4f5; border: none; padding: 7px 12px; border-radius: 20px; cursor: pointer;
+  }
+  .hp-list { flex: 1; overflow-y: auto; padding: 6px 10px; }
+  .hp-item {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 12px 12px; border-radius: 12px; cursor: pointer;
+    transition: background .14s;
+  }
+  .hp-item:hover, .hp-item:active { background: #f7f7f8; }
+  .hp-item.active { background: #f4f4f5; }
+  .hp-item-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .hp-item-title { font-size: 13.5px; font-weight: 600; color: #1c1c1e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hp-item-time { font-size: 10.5px; color: #9aa0a6; flex-shrink: 0; }
+  .hp-item-preview { font-size: 12px; color: #7a7d84; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hp-empty { text-align: center; color: #9aa0a6; font-size: 13px; padding: 40px 20px; }
+
   /* ─── INPUT AREA ─── */
   .inp-area {
     padding: 10px 14px; padding-bottom: calc(10px + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--border); background: #fff; flex-shrink: 0;
+    border-top: 1px solid #eceded; background: #fff; flex-shrink: 0; position: relative;
   }
   .inp-row {
     display: flex; align-items: center; gap: 8px;
-    background: var(--bg-soft); border: 1.5px solid transparent;
+    background: #f4f4f5; border: 1.5px solid transparent;
     border-radius: 26px; padding: 9px 10px 9px 16px;
     transition: border-color 0.2s, background 0.2s;
   }
-  .inp-row:focus-within { border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(50,71,94,0.08); }
-  .inp-icon-btn {
-    background: none; border: none; cursor: pointer; color: var(--muted); padding: 2px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    transition: color 0.15s; -webkit-tap-highlight-color: transparent;
-  }
-  .inp-icon-btn:hover { color: var(--navy); }
-  .inp-icon-btn svg { width: 18px; height: 18px; }
+  .inp-row:focus-within { border-color: var(--brand-ink); background: #fff; box-shadow: 0 0 0 3px rgba(10,10,10,0.06); }
   .inp-row input {
-    flex: 1; background: none; border: none; outline: none; color: var(--text);
-    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 400; caret-color: var(--navy); min-width: 0;
+    flex: 1; background: none; border: none; outline: none; color: #202124;
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 400;
+    caret-color: var(--brand-ink); min-width: 0;
   }
-  .inp-row input::placeholder { color: var(--muted); }
-
-  .mic-btn {
+  .inp-row input::placeholder { color: #9aa0a6; }
+  .send-btn, .mic-btn {
     width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
-    background: var(--bg-soft); color: var(--navy); flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, transform 0.12s; -webkit-tap-highlight-color: transparent;
-    position: relative;
+    transition: opacity 0.15s, transform 0.12s, background .15s; flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
   }
-  .mic-btn svg { width: 17px; height: 17px; }
-  .mic-btn.recording { background: #e6534d; color: #fff; }
-  .mic-btn.recording::after {
-    content: ''; position: absolute; inset: -5px; border-radius: 50%;
-    border: 2px solid #e6534d; opacity: 0.5; animation: pulseRing 1.1s infinite;
-  }
-  @keyframes pulseRing { 0% { transform: scale(0.9); opacity: 0.6; } 100% { transform: scale(1.35); opacity: 0; } }
-
-  .send-btn {
-    width: 36px; height: 36px; border-radius: 50%; background: var(--navy); border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity 0.15s, transform 0.12s; flex-shrink: 0; -webkit-tap-highlight-color: transparent;
-  }
+  .send-btn { background: var(--brand-ink); }
   .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-  .send-btn:not(:disabled):active { opacity: 0.8; transform: scale(0.94); }
+  .send-btn:not(:disabled):active { opacity: 0.85; transform: scale(0.94); }
   .send-btn svg { width: 16px; height: 16px; }
+  .mic-btn { background: #f4f4f5; color: #55585e; }
+  .mic-btn.recording { background: #ef4444; color: #fff; }
+  .mic-btn svg { width: 17px; height: 17px; }
+  .mic-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-  .recording-hint {
-    text-align: center; font-size: 11px; color: #e6534d; font-weight: 500;
-    margin-top: 6px; opacity: 0; transition: opacity 0.15s;
+  .rec-overlay {
+    position: absolute; left: 14px; right: 14px; bottom: calc(100% + 8px);
+    background: var(--brand-ink); color: #fff; border-radius: 14px;
+    padding: 10px 14px; display: none; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 500; animation: fadeUp 0.15s ease;
   }
-  .recording-hint.show { opacity: 1; }
+  .rec-overlay.show { display: flex; }
+  .rec-dot { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; animation: pulse 1s infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .rec-bars { display: flex; align-items: center; gap: 2px; height: 16px; flex: 1; }
+  .rec-bars span { width: 2.5px; background: var(--brand-gold); border-radius: 2px; animation: wave 0.9s ease-in-out infinite; }
+  .rec-bars span:nth-child(1){height:40%;animation-delay:0s}
+  .rec-bars span:nth-child(2){height:80%;animation-delay:.1s}
+  .rec-bars span:nth-child(3){height:55%;animation-delay:.2s}
+  .rec-bars span:nth-child(4){height:100%;animation-delay:.3s}
+  .rec-bars span:nth-child(5){height:65%;animation-delay:.4s}
+  .rec-bars span:nth-child(6){height:45%;animation-delay:.5s}
+  .rec-bars span:nth-child(7){height:75%;animation-delay:.6s}
+  @keyframes wave { 0%,100% { transform: scaleY(0.4);} 50% { transform: scaleY(1);} }
 
-  .inp-footer {
-    text-align: center; margin-top: 6px; font-size: 10px;
-    color: var(--muted); letter-spacing: 0.01em;
-  }
-  .inp-footer a { color: var(--navy); text-decoration: none; font-weight: 600; }
-  .inp-footer a:hover { text-decoration: underline; }
+  .inp-footer { text-align: center; margin-top: 6px; font-size: 10px; color: #9aa0a6; letter-spacing: 0.01em; }
+  .inp-footer b { color: #7a7d84; font-weight: 600; }
 </style>
 </head>
 <body>
-<div class="shell">
-
-  <!-- SIDEBAR: CHAT HISTORY -->
-  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-hdr">
-      <div class="sidebar-title">Chat history</div>
-      <button class="hdr-icon-btn" onclick="closeSidebar()" aria-label="Close history">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <button class="new-chat-btn" onclick="startNewChat()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      New chat
-    </button>
-    <div class="session-list" id="session-list"></div>
-  </div>
+<div class="shell" style="position:relative;">
 
   <!-- HEADER -->
   <div class="hdr">
-    <button class="hdr-icon-btn" onclick="openSidebar()" aria-label="Chat history">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-    <div class="hdr-logo">
-      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        <rect width="40" height="40" rx="11" fill="#32475E"/>
-        <text x="20" y="25" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">S99</text>
-        <circle cx="30.5" cy="10.5" r="3.2" fill="#70C8B1"/>
-      </svg>
-    </div>
+    <div class="logo-mark"><span>S9</span></div>
     <div class="hdr-info">
-      <div class="hdr-name">S99 Agency Reporting Assistant</div>
-      <div class="hdr-status-row">
-        <span class="hdr-status-dot"></span>
-        <span class="hdr-status-text">Connected · Live data</span>
+      <div class="hdr-name">S99 Agency</div>
+      <div class="hdr-sub-row">
+        <span class="hdr-sub-label">Reporting Assistant</span>
+        <span class="live-badge">Live</span>
       </div>
     </div>
-    <button class="hdr-icon-btn" onclick="refreshChat()" aria-label="New chat">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-    </button>
+    <div class="hdr-actions">
+      <button class="hdr-icon-btn" aria-label="Chat history" onclick="openHistory()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg>
+      </button>
+      <button class="hdr-icon-btn" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
 
-  <!-- SUBHEADER: connected sources -->
-  <div class="subhdr" id="subhdr">
-    <div class="src-item"><span class="src-dot"></span>Slack</div>
-    <div class="src-item"><span class="src-dot"></span>GoHighLevel</div>
-    <div class="src-item"><span class="src-dot"></span>Airtable</div>
-    <div class="src-item"><span class="src-dot"></span>Gmail</div>
-    <div class="src-item"><span class="src-dot"></span>Calendar</div>
+  <!-- CONNECTED DATA SOURCES -->
+  <div class="src-bar" id="srcBar">
+    <div class="src-chip"><span class="src-dot"></span>Slack</div>
+    <div class="src-chip"><span class="src-dot"></span>GHL</div>
+    <div class="src-chip"><span class="src-dot"></span>Meta Ads</div>
+    <div class="src-chip"><span class="src-dot"></span>HubSpot</div>
   </div>
 
   <!-- MESSAGES -->
   <div class="msgs" id="msgs"></div>
 
+  <!-- HISTORY DRAWER -->
+  <div class="history-panel" id="historyPanel">
+    <div class="hp-hdr">
+      <button class="hdr-icon-btn" aria-label="Back" onclick="closeHistory()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="hp-title">Previous chats</div>
+      <button class="hp-new-btn" onclick="startNewChatFromHistory()">+ New chat</button>
+    </div>
+    <div class="hp-list" id="hpList"></div>
+  </div>
+
   <!-- INPUT AREA -->
   <div class="inp-area">
+    <div class="rec-overlay" id="recOverlay">
+      <div class="rec-dot"></div>
+      <div class="rec-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <span id="recTimer">0:00</span>
+    </div>
     <div class="inp-row">
-      <button class="inp-icon-btn" aria-label="Attachment">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-        </svg>
-      </button>
       <input
-        type="text" id="inp" placeholder="Ask about leads, campaigns, or client activity…"
+        type="text" id="inp" placeholder="Ask about your leads, calls, or campaigns…"
         onkeydown="onKey(event)"
         autocomplete="off" autocorrect="off" autocapitalize="sentences"
       />
-      <button class="mic-btn" id="mic-btn" aria-label="Hold to record voice message">
+      <button class="mic-btn" id="mic-btn" aria-label="Hold to record">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
+          <rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/>
         </svg>
       </button>
       <button class="send-btn" id="send-btn" onclick="send()" aria-label="Send">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
-    <div class="recording-hint" id="recording-hint">● Recording… release to send, drag up to cancel</div>
-    <div class="inp-footer">Powered by <a href="https://botyama.com" target="_blank" rel="noopener">botyama.com</a></div>
+    <div class="inp-footer">S99 Agency Internal Tool · Powered by <b>botyama.com</b></div>
   </div>
 
 </div>
@@ -434,72 +368,69 @@
   /* ═══════════════════════════════════
      CONFIG — UPDATE THESE
   ═══════════════════════════════════ */
-  const WEBHOOK_URL = 'https://ai.botyama.com/webhook/S99-REPORTING-AGENT';
+  const WEBHOOK_URL = 'https://ai.botyama.com/webhook/BOT TEST';
 
   /* ═══════════════════════════════════
-     SESSION / HISTORY STORAGE
-     Sessions are persisted in localStorage so Chris (or any
-     client user) can reopen any previous conversation.
-     Swap this for a webhook call (action:'list_sessions' /
-     'get_session') if you want history synced server-side.
+     SOURCE BADGE STYLES (per data source)
   ═══════════════════════════════════ */
-  const SESSIONS_KEY = 's99_reporting_sessions';
+  const SOURCE_STYLES = {
+    slack:    { label: 'Slack',    fg: '#611f69', bg: '#f3e8f5' },
+    ghl:      { label: 'GHL',      fg: '#c2540a', bg: '#fdeee2' },
+    hubspot:  { label: 'HubSpot',  fg: '#b8420f', bg: '#fdece4' },
+    'meta ads': { label: 'Meta Ads', fg: '#1456c9', bg: '#e8f0fe' },
+    metaads:  { label: 'Meta Ads', fg: '#1456c9', bg: '#e8f0fe' },
+    system:   { label: 'S99 AI',   fg: '#33363b', bg: '#eeeeef' },
+    default:  { label: 'S99 AI',   fg: '#33363b', bg: '#eeeeef' }
+  };
+  function sourceStyle(src) {
+    const key = (src || 'default').toString().toLowerCase().trim();
+    return SOURCE_STYLES[key] || { label: src || 'S99 AI', fg: '#33363b', bg: '#eeeeef' };
+  }
+
+  /* ═══════════════════════════════════
+     SESSION / CHAT-HISTORY STORAGE
+     (each browser/client keeps its own list of
+     previous conversations, reopenable at any time)
+  ═══════════════════════════════════ */
+  const STORE_KEY = 's99_reporting_sessions_v1';
+  let sessions = [];
+  let currentSessionId = null;
   let isBusy = false;
   let lastUserMessage = '';
-  let currentSession = null; // { id, createdAt, title, messages: [] }
 
-  function loadSessions() {
-    try { return JSON.parse(localStorage.getItem(SESSIONS_KEY)) || []; }
-    catch { return []; }
+  function loadSessionsFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      sessions = raw ? JSON.parse(raw) : [];
+    } catch (e) { sessions = []; }
   }
-  function saveSessions(list) {
-    try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(list)); } catch {}
+  function persistSessions() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(sessions)); } catch (e) {}
   }
-  function persistCurrentSession() {
-    if (!currentSession) return;
-    const list = loadSessions();
-    const idx = list.findIndex(s => s.id === currentSession.id);
-    if (idx >= 0) list[idx] = currentSession; else list.unshift(currentSession);
-    saveSessions(list);
+  function getCurrentSession() {
+    return sessions.find(s => s.id === currentSessionId);
   }
-  function newSessionId() {
-    return 's99_' + Math.random().toString(36).slice(2, 11) + '_' + Date.now();
-  }
-
-  /* ═══════════════════════════════════
-     OPENING OPTIONS
-  ═══════════════════════════════════ */
-  const STARTER_OPTIONS = [
-    "What happened across our channels today?",
-    "Show me this week's new leads",
-    "Pull the GHL pipeline status",
-    "Summarize the latest client activity"
-  ];
-
-  const FOLLOWUP_SETS = [
-    [ "Break that down by client", "Show the source for this", "What needs my attention?", "Compare to last week" ],
-    [ "Show open tasks", "Any flagged messages?", "Pull the latest report", "Summarize by channel" ],
-    [ "What changed since yesterday?", "Show pipeline movement", "Any client at risk?", "Give me the daily digest" ]
-  ];
-  let followupIndex = 0;
-  function getFollowupOptions() {
-    const opts = FOLLOWUP_SETS[followupIndex % FOLLOWUP_SETS.length];
-    followupIndex++;
-    return opts;
-  }
-
-  /* ═══════════════════════════════════
-     SOURCE BADGE MAPPING
-  ═══════════════════════════════════ */
-  function sourceLabel(src) {
-    if (!src) return null;
-    const map = {
-      slack: 'Slack', ghl: 'GoHighLevel', gohighlevel: 'GoHighLevel',
-      airtable: 'Airtable', gmail: 'Gmail', email: 'Gmail',
-      calendar: 'Calendar', 'google calendar': 'Calendar'
+  function createSession() {
+    const s = {
+      id: 's99_' + Math.random().toString(36).slice(2, 9) + '_' + Date.now(),
+      title: 'New conversation',
+      messages: [],
+      updatedAt: Date.now()
     };
-    const key = String(src).toLowerCase().trim();
-    return map[key] || src;
+    sessions.unshift(s);
+    currentSessionId = s.id;
+    persistSessions();
+    return s;
+  }
+  function touchSession(preview) {
+    const s = getCurrentSession();
+    if (!s) return;
+    s.updatedAt = Date.now();
+    if (preview && (s.title === 'New conversation')) {
+      s.title = preview.length > 42 ? preview.slice(0, 42) + '…' : preview;
+    }
+    sessions.sort((a,b) => b.updatedAt - a.updatedAt);
+    persistSessions();
   }
 
   /* ═══════════════════════════════════
@@ -536,6 +467,28 @@
   }
 
   /* ═══════════════════════════════════
+     STARTER / FOLLOW-UP OPTIONS
+  ═══════════════════════════════════ */
+  const STARTER_OPTIONS = [
+    "Today's lead summary",
+    "This week's Slack activity",
+    "Compare channel performance",
+    "Show open opportunities in GHL",
+    "Ad spend vs. bookings this month"
+  ];
+  const FOLLOWUP_SETS = [
+    ["Break this down by channel", "Show me last week for comparison", "Export this as a table", "Who's the client contact?"],
+    ["Filter to new leads only", "What changed since yesterday?", "Show response time", "Flag anything urgent"],
+    ["Summarize in one line for Chris", "Show the raw data", "Set a daily digest for this", "That's all, thanks"]
+  ];
+  let followupIndex = 0;
+  function getFollowupOptions() {
+    const opts = FOLLOWUP_SETS[followupIndex % FOLLOWUP_SETS.length];
+    followupIndex++;
+    return opts;
+  }
+
+  /* ═══════════════════════════════════
      UTILITIES
   ═══════════════════════════════════ */
   function scrollB() {
@@ -543,9 +496,15 @@
     setTimeout(()=>{ el.scrollTop = el.scrollHeight; }, 40);
   }
   function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function getTime(ts) { return new Date(ts || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
-  function getDateLabel(ts) { return new Date(ts || Date.now()).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'}); }
-
+  function fmtDayTime(ts) {
+    const d = new Date(ts || Date.now());
+    const day = d.toLocaleDateString([], { weekday: 'short' });
+    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return day + ', ' + time;
+  }
+  function fmtTime(ts) {
+    return new Date(ts || Date.now()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
   function setBusy(state) {
     isBusy = state;
     document.getElementById('send-btn').disabled = state;
@@ -554,46 +513,46 @@
   }
   function removeOptions(id) { document.getElementById(id)?.remove(); }
 
-  function agentRowHTML(ts) {
+  function agentRowHTML(source, ts) {
+    const st = sourceStyle(source);
     return `
       <div class="agent-row">
-        <div class="agent-row-av">
-          <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
-            <rect width="26" height="26" rx="8" fill="#32475E"/>
-            <text x="13" y="17" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#ffffff">S99</text>
-          </svg>
-        </div>
-        <span class="agent-row-name">S99 Assistant</span>
-        <span class="agent-row-time">${getTime(ts)}</span>
+        <div class="agent-row-av"><span>S9</span></div>
+        <span class="agent-row-name">S99 AI</span>
+        <span class="src-badge" style="--sb-fg:${st.fg}; --sb-bg:${st.bg};">${escHtml(st.label)}</span>
+        <span class="agent-row-time">${fmtTime(ts)}</span>
       </div>`;
   }
 
   /* ═══════════════════════════════════
-     RENDER OPENING
+     RENDER: full message list (used when
+     loading a fresh chat or reopening history)
   ═══════════════════════════════════ */
-  function renderOpening() {
-    const m = document.getElementById('msgs');
-    m.innerHTML = '';
+  function clearMsgs() { document.getElementById('msgs').innerHTML = ''; }
 
+  function renderDatePill(ts) {
+    const m = document.getElementById('msgs');
     const dp = document.createElement('div');
     dp.className = 'date-pill';
-    dp.textContent = getDateLabel();
+    dp.textContent = new Date(ts || Date.now()).toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'});
     m.appendChild(dp);
+  }
 
+  function renderOpening() {
+    clearMsgs();
+    renderDatePill(Date.now());
+
+    const m = document.getElementById('msgs');
     const grp = document.createElement('div');
     grp.className = 'msg-group';
-    grp.id = 'opening-group';
     grp.innerHTML = `
-      ${agentRowHTML()}
+      ${agentRowHTML('system', Date.now())}
       <div class="msg">
-        <div class="bub-col">
-          <div class="bub b">
-            <p>Hi, I'm the S99 Reporting Assistant.</p>
-            <p>Ask me anything about your campaigns, leads, or client activity — I pull live data from Slack, GoHighLevel, Airtable, and more.</p>
-          </div>
+        <div class="bub b">
+          <p>Hey Chris 👋</p>
+          <p>I'm the S99 reporting assistant — connected to Slack, GHL, Meta Ads and HubSpot. Ask me anything about a client account and I'll pull it live.</p>
         </div>
-      </div>
-    `;
+      </div>`;
     m.appendChild(grp);
 
     const optsDiv = document.createElement('div');
@@ -610,27 +569,40 @@
     scrollB();
   }
 
-  /* ═══════════════════════════════════
-     APPEND USER MESSAGE
-  ═══════════════════════════════════ */
-  function appendUser(txt, ts) {
-    const m = document.getElementById('msgs');
-    const grp = document.createElement('div');
-    grp.className = 'msg-group';
-    grp.innerHTML = `
-      <div class="msg u">
-        <div class="u-av">👤</div>
-        <div class="bub-col u">
-          <div class="bub u">${escHtml(txt)}</div>
-          <div class="bub-meta"><span class="meta-time">${getTime(ts)}</span></div>
-        </div>
-      </div>`;
-    m.appendChild(grp);
+  function renderStoredMessages(session) {
+    clearMsgs();
+    renderDatePill(session.messages[0]?.ts || Date.now());
+    session.messages.forEach(msg => {
+      if (msg.role === 'user') appendUser(msg.text, msg.ts, false);
+      else appendBot(msg.text, null, msg.source, msg.ts, false);
+    });
     scrollB();
   }
 
   /* ═══════════════════════════════════
-     APPEND TYPING INDICATOR
+     APPEND USER MESSAGE
+  ═══════════════════════════════════ */
+  function appendUser(txt, ts, store = true) {
+    const m = document.getElementById('msgs');
+    const grp = document.createElement('div');
+    grp.className = 'msg-group';
+    grp.innerHTML = `
+      <div class="u-time-row"><span>${fmtDayTime(ts)}</span></div>
+      <div class="msg u">
+        <div class="u-av">👤</div>
+        <div class="bub u">${escHtml(txt)}</div>
+      </div>`;
+    m.appendChild(grp);
+    if (store) {
+      const s = getCurrentSession();
+      s.messages.push({ role: 'user', text: txt, ts });
+      touchSession(txt);
+    }
+    scrollB();
+  }
+
+  /* ═══════════════════════════════════
+     TYPING INDICATOR
   ═══════════════════════════════════ */
   function appendTyping() {
     const m = document.getElementById('msgs');
@@ -638,7 +610,7 @@
     const grp = document.createElement('div');
     grp.id = id; grp.className = 'msg-group';
     grp.innerHTML = `
-      ${agentRowHTML()}
+      ${agentRowHTML('system', Date.now())}
       <div class="msg"><div class="tdots"><div class="d"></div><div class="d"></div><div class="d"></div></div></div>`;
     m.appendChild(grp);
     scrollB();
@@ -646,58 +618,50 @@
   }
 
   /* ═══════════════════════════════════
-     APPEND BOT MESSAGE + SOURCE BADGE + OPTIONS
+     APPEND BOT MESSAGE + OPTIONS
   ═══════════════════════════════════ */
-  function appendBot(rawContent, options, source, ts) {
+  function appendBot(rawContent, options, source, ts, store = true) {
     const m = document.getElementById('msgs');
-    const optId = 'opts_' + Date.now();
-    const label = sourceLabel(source);
+    const optId = 'opts_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
 
     const grp = document.createElement('div');
     grp.className = 'msg-group';
     grp.innerHTML = `
-      ${agentRowHTML(ts)}
-      <div class="msg">
-        <div class="bub-col">
-          <div class="bub b">${parseMarkdown(rawContent)}</div>
-          <div class="bub-meta">
-            <span class="meta-time">${getTime(ts)}</span>
-            ${label ? `<span class="source-badge"><span class="src-dot2"></span>via ${escHtml(label)}</span>` : ''}
-          </div>
-        </div>
-      </div>`;
+      ${agentRowHTML(source, ts)}
+      <div class="msg"><div class="bub b">${parseMarkdown(rawContent)}</div></div>`;
     m.appendChild(grp);
 
     const pillOptions = (Array.isArray(options) && options.length > 0) ? options : getFollowupOptions();
     const optsDiv = document.createElement('div');
     optsDiv.className = 'options-wrap';
     optsDiv.id = optId;
-    pillOptions.forEach(label2 => {
+    pillOptions.forEach(label => {
       const btn = document.createElement('button');
       btn.className = 'opt-pill';
-      btn.textContent = label2;
-      btn.onclick = () => { removeOptions(optId); sendMessage(label2); };
+      btn.textContent = label;
+      btn.onclick = () => { removeOptions(optId); sendMessage(label); };
       optsDiv.appendChild(btn);
     });
     m.appendChild(optsDiv);
+
+    if (store) {
+      const s = getCurrentSession();
+      s.messages.push({ role: 'bot', text: rawContent, source: source || 'system', ts });
+      touchSession();
+    }
     scrollB();
   }
 
-  /* ═══════════════════════════════════
-     ERROR
-  ═══════════════════════════════════ */
   function appendError() {
     const m = document.getElementById('msgs');
     const grp = document.createElement('div');
     grp.className = 'msg-group';
     grp.innerHTML = `
-      ${agentRowHTML()}
+      ${agentRowHTML('system', Date.now())}
       <div class="msg">
-        <div class="bub-col">
-          <div class="bub err">
-            Sorry, there was a connection issue. Please try again.
-            <br><button class="retry-btn" onclick="retry()">↺ Retry</button>
-          </div>
+        <div class="bub err">
+          Couldn't reach the data sources. Please try again.
+          <br><button class="retry-btn" onclick="retry()">↺ Retry</button>
         </div>
       </div>`;
     m.appendChild(grp);
@@ -706,73 +670,8 @@
   function retry() {
     if (!lastUserMessage || isBusy) return;
     document.querySelectorAll('.bub.err').forEach(e => e.closest('.msg-group')?.remove());
-    sendMessage(lastUserMessage);
+    sendMessage(lastUserMessage, true);
   }
-
-  /* ═══════════════════════════════════
-     CHAT HISTORY SIDEBAR
-  ═══════════════════════════════════ */
-  function openSidebar() {
-    renderSidebarList();
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebar-backdrop').classList.add('open');
-  }
-  function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebar-backdrop').classList.remove('open');
-  }
-
-  function renderSidebarList() {
-    const list = loadSessions();
-    const box = document.getElementById('session-list');
-    box.innerHTML = '';
-    if (!list.length) {
-      box.innerHTML = '<div class="session-empty">No previous conversations yet.<br>Start chatting and they\\'ll show up here.</div>';
-      return;
-    }
-    list
-      .sort((a, b) => b.createdAt - a.createdAt)
-      .forEach(sess => {
-        const lastMsg = sess.messages[sess.messages.length - 1];
-        const item = document.createElement('div');
-        item.className = 'session-item' + (currentSession && sess.id === currentSession.id ? ' active' : '');
-        item.innerHTML = `
-          <div class="session-item-title">${escHtml(sess.title || 'New conversation')}</div>
-          <div class="session-item-preview">${escHtml(lastMsg ? lastMsg.text : '')}</div>
-          <div class="session-item-time">${new Date(sess.createdAt).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}</div>
-        `;
-        item.onclick = () => openSession(sess.id);
-        box.appendChild(item);
-      });
-  }
-
-  function openSession(id) {
-    const list = loadSessions();
-    const sess = list.find(s => s.id === id);
-    if (!sess) return;
-    currentSession = sess;
-    const m = document.getElementById('msgs');
-    m.innerHTML = '';
-    const dp = document.createElement('div');
-    dp.className = 'date-pill';
-    dp.textContent = getDateLabel(sess.createdAt);
-    m.appendChild(dp);
-    sess.messages.forEach(msg => {
-      if (msg.role === 'user') appendUser(msg.text, msg.ts);
-      else appendBot(msg.text, null, msg.source, msg.ts);
-    });
-    // remove trailing follow-up option pills from replay — resume with fresh options only after new send
-    document.querySelectorAll('.options-wrap').forEach(el => el.remove());
-    closeSidebar();
-    scrollB();
-  }
-
-  function startNewChat() {
-    currentSession = { id: newSessionId(), createdAt: Date.now(), title: '', messages: [] };
-    renderOpening();
-    closeSidebar();
-  }
-  function refreshChat() { startNewChat(); }
 
   /* ═══════════════════════════════════
      SEND LOGIC
@@ -787,18 +686,12 @@
     sendMessage(txt);
   }
 
-  async function sendMessage(txt, isVoice) {
+  async function sendMessage(txt, isRetry = false) {
     if (isBusy) return;
     lastUserMessage = txt;
     setBusy(true);
-    const userTs = Date.now();
-    appendUser(txt, userTs);
-
-    if (!currentSession) currentSession = { id: newSessionId(), createdAt: Date.now(), title: '', messages: [] };
-    if (!currentSession.title) currentSession.title = txt.slice(0, 60);
-    currentSession.messages.push({ role: 'user', text: txt, ts: userTs });
-    persistCurrentSession();
-
+    const now = Date.now();
+    if (!isRetry) appendUser(txt, now);
     const tid = appendTyping();
     scrollB();
 
@@ -806,23 +699,14 @@
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: txt,
-          source: 's99_reporting_chatbot',
-          sessionId: currentSession.id,
-          action: isVoice ? 'voice_message' : 'chat'
-        })
+        body: JSON.stringify({ message: txt, source: 'internal_reporting', sessionId: currentSessionId, action: 'chat' })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       document.getElementById(tid)?.remove();
 
-      const reply = data.message || data.reply || data.output || data.text || 'Here\\'s what I found.';
-      const botTs = Date.now();
-      appendBot(reply, data.buttons, data.source, botTs);
-
-      currentSession.messages.push({ role: 'bot', text: reply, source: data.source, ts: botTs });
-      persistCurrentSession();
+      const reply = data.message || data.reply || data.output || data.text || 'Got it — pulling that up now.';
+      appendBot(reply, data.buttons, data.source, Date.now());
 
     } catch (err) {
       document.getElementById(tid)?.remove();
@@ -834,131 +718,145 @@
   }
 
   /* ═══════════════════════════════════
-     VOICE RECORDING — hold to speak
+     HISTORY DRAWER
   ═══════════════════════════════════ */
-  let mediaRecorder = null;
-  let audioChunks = [];
-  let recordStartTime = 0;
-  let recordingCanceled = false;
-  const MIN_RECORD_MS = 350;
-
-  function blobToBase64(blob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
+  function openHistory() {
+    renderHistoryList();
+    document.getElementById('historyPanel').classList.add('open');
+  }
+  function closeHistory() {
+    document.getElementById('historyPanel').classList.remove('open');
+  }
+  function renderHistoryList() {
+    const list = document.getElementById('hpList');
+    if (sessions.length === 0) {
+      list.innerHTML = `<div class="hp-empty">No previous chats yet.<br>Start a conversation and it'll show up here.</div>`;
+      return;
+    }
+    list.innerHTML = '';
+    sessions.forEach(s => {
+      const lastMsg = s.messages[s.messages.length - 1];
+      const preview = lastMsg ? (lastMsg.role === 'user' ? lastMsg.text : lastMsg.text.replace(/[#*_`>-]/g, '')) : 'No messages yet';
+      const item = document.createElement('div');
+      item.className = 'hp-item' + (s.id === currentSessionId ? ' active' : '');
+      item.innerHTML = `
+        <div class="hp-item-top">
+          <div class="hp-item-title">${escHtml(s.title)}</div>
+          <div class="hp-item-time">${fmtDayTime(s.updatedAt)}</div>
+        </div>
+        <div class="hp-item-preview">${escHtml(preview)}</div>`;
+      item.onclick = () => {
+        currentSessionId = s.id;
+        renderStoredMessages(s);
+        closeHistory();
+      };
+      list.appendChild(item);
     });
   }
-
-  async function startRecording() {
-    if (isBusy) return;
-    recordingCanceled = false;
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
-      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-      mediaRecorder.onstop = async () => {
-        stream.getTracks().forEach(t => t.stop());
-        const elapsed = Date.now() - recordStartTime;
-        if (recordingCanceled || elapsed < MIN_RECORD_MS) return;
-        const blob = new Blob(audioChunks, { type: 'audio/webm' });
-        await sendVoiceMessage(blob);
-      };
-      mediaRecorder.start();
-      recordStartTime = Date.now();
-      document.getElementById('mic-btn').classList.add('recording');
-      document.getElementById('recording-hint').classList.add('show');
-    } catch (err) {
-      appendError();
-    }
+  function startNewChatFromHistory() {
+    createSession();
+    renderOpening();
+    closeHistory();
   }
 
-  function stopRecording(cancel) {
-    recordingCanceled = !!cancel;
-    document.getElementById('mic-btn').classList.remove('recording');
-    document.getElementById('recording-hint').classList.remove('show');
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
-  }
+  /* ═══════════════════════════════════
+     VOICE INPUT — hold to record, release to send
+  ═══════════════════════════════════ */
+  let recognition = null;
+  let recognitionSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  let isRecording = false;
+  let recTimerInterval = null;
+  let recSeconds = 0;
+  let finalTranscript = '';
 
-  async function sendVoiceMessage(blob) {
-    if (isBusy) return;
-    setBusy(true);
-    const userTs = Date.now();
-
-    // Show a temporary placeholder while transcription happens
-    appendUser('🎤 Voice message', userTs);
-    const tid = appendTyping();
-
-    try {
-      const base64Audio = await blobToBase64(blob);
-      if (!currentSession) currentSession = { id: newSessionId(), createdAt: Date.now(), title: '', messages: [] };
-
-      const res = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'voice_message',
-          audio: base64Audio,
-          mimeType: 'audio/webm',
-          sessionId: currentSession.id,
-          source: 's99_reporting_chatbot'
-        })
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      document.getElementById(tid)?.remove();
-
-      // If the backend returns the transcript, swap the placeholder for real text
-      if (data.transcript) {
-        const lastUserBub = document.querySelectorAll('.msg.u .bub.u');
-        if (lastUserBub.length) lastUserBub[lastUserBub.length - 1].textContent = data.transcript;
-        if (!currentSession.title) currentSession.title = data.transcript.slice(0, 60);
-        currentSession.messages.push({ role: 'user', text: data.transcript, ts: userTs });
-      } else {
-        currentSession.messages.push({ role: 'user', text: '🎤 Voice message', ts: userTs });
+  function initRecognition() {
+    if (!recognitionSupported) return null;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const r = new SR();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = 'en-US';
+    r.onresult = (e) => {
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) finalTranscript += e.results[i][0].transcript;
+        else interim += e.results[i][0].transcript;
       }
+      document.getElementById('inp').value = (finalTranscript + ' ' + interim).trim();
+    };
+    r.onerror = () => stopRecording(true);
+    return r;
+  }
 
-      const reply = data.message || data.reply || data.output || data.text || 'Here\\'s what I found.';
-      const botTs = Date.now();
-      appendBot(reply, data.buttons, data.source, botTs);
-      currentSession.messages.push({ role: 'bot', text: reply, source: data.source, ts: botTs });
-      persistCurrentSession();
+  function startRecording(e) {
+    e.preventDefault();
+    if (isRecording || isBusy || !recognitionSupported) return;
+    isRecording = true;
+    finalTranscript = '';
+    recSeconds = 0;
+    document.getElementById('mic-btn').classList.add('recording');
+    const overlay = document.getElementById('recOverlay');
+    overlay.classList.add('show');
+    document.getElementById('recTimer').textContent = '0:00';
+    recTimerInterval = setInterval(() => {
+      recSeconds++;
+      const m = Math.floor(recSeconds / 60), s = recSeconds % 60;
+      document.getElementById('recTimer').textContent = m + ':' + String(s).padStart(2,'0');
+    }, 1000);
+    recognition = initRecognition();
+    try { recognition && recognition.start(); } catch (err) {}
+  }
 
-    } catch (err) {
-      document.getElementById(tid)?.remove();
-      appendError();
-    } finally {
-      setBusy(false);
+  function stopRecording(cancelled = false) {
+    if (!isRecording) return;
+    isRecording = false;
+    document.getElementById('mic-btn').classList.remove('recording');
+    document.getElementById('recOverlay').classList.remove('show');
+    clearInterval(recTimerInterval);
+    try { recognition && recognition.stop(); } catch (err) {}
+
+    if (!cancelled) {
+      const inp = document.getElementById('inp');
+      const txt = inp.value.trim();
+      if (txt) { inp.value = ''; sendMessage(txt); }
     }
   }
 
-  function initMicButton() {
+  function setupMicButton() {
     const btn = document.getElementById('mic-btn');
-    const start = (e) => { e.preventDefault(); startRecording(); };
-    const end = (e) => { e.preventDefault(); stopRecording(false); };
-    const cancel = (e) => { stopRecording(true); };
-    btn.addEventListener('mousedown', start);
-    btn.addEventListener('touchstart', start, { passive: false });
-    btn.addEventListener('mouseup', end);
-    btn.addEventListener('touchend', end);
-    btn.addEventListener('mouseleave', cancel);
-    btn.addEventListener('touchcancel', cancel);
+    if (!recognitionSupported) {
+      btn.disabled = true;
+      btn.title = 'Voice input is not supported in this browser';
+      return;
+    }
+    btn.title = 'Hold to record';
+    btn.addEventListener('mousedown', startRecording);
+    btn.addEventListener('touchstart', startRecording, { passive: false });
+    ['mouseup', 'mouseleave'].forEach(evt => btn.addEventListener(evt, () => stopRecording(false)));
+    btn.addEventListener('touchend', (e) => { e.preventDefault(); stopRecording(false); });
+    btn.addEventListener('touchcancel', () => stopRecording(true));
   }
 
   /* ═══════════════════════════════════
      INIT
   ═══════════════════════════════════ */
   window.addEventListener('DOMContentLoaded', () => {
-    currentSession = { id: newSessionId(), createdAt: Date.now(), title: '', messages: [] };
-    renderOpening();
-    initMicButton();
+    loadSessionsFromStorage();
+    if (sessions.length > 0) {
+      currentSessionId = sessions[0].id;
+      const s = getCurrentSession();
+      if (s.messages.length > 0) renderStoredMessages(s);
+      else renderOpening();
+    } else {
+      createSession();
+      renderOpening();
+    }
+    setupMicButton();
     if (window.innerWidth >= 600) document.getElementById('inp').focus();
   });
   window.addEventListener('resize', scrollB);
   document.body.addEventListener('touchmove', (e) => {
-    if (!e.target.closest('.msgs') && !e.target.closest('.session-list')) e.preventDefault();
+    if (!e.target.closest('.msgs') && !e.target.closest('.hp-list')) e.preventDefault();
   }, { passive: false });
 </script>
 </body>
